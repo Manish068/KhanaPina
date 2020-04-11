@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "829273182494",
+    "firebase_url": "https://khana-pina-b0f21.firebaseio.com",
+    "project_id": "khana-pina-b0f21",
+    "storage_bucket": "khana-pina-b0f21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829273182494:android:faae45d81174675dfd390f",
+        "android_client_info": {
+          "package_name": "com.Application.khanapina"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829273182494-j6k83dad300tatfu9aekvsvhbrkfvb4s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.Application.khanapina",
+            "certificate_hash": "db132caef2a27e9600c8b8b9c50ccba16ce0a6ac"
+          }
+        },
+        {
+          "client_id": "829273182494-raqm699jd6i383a04dbvv0ou20gt7dsc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBljNvHjapfjeSXi_cW0EK3PQ-uzVUZzUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829273182494-raqm699jd6i383a04dbvv0ou20gt7dsc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

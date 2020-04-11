@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:itemIconTint="@color/nav_color"
+        app:itemIconSize="30dp"
+        android:background="@drawable/nav_bar_round"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="363dp"
+        android:layout_height="713dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottom_navigation"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="97dp"
+            android:layout_marginBottom="90dp"
+            android:fontFamily="@font/bodoni_mt_bold"
+            android:onClick="logout"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.702"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.168" />
+
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="144dp"
+            android:elevation="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button2"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/yellow"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/dessertlist"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shadow_button"
+                    android:drawableTop="@drawable/ic_dessert"
+                    android:fontFamily="@font/perpetua_bold"
+                    android:text="Dessert"
+                    android:textAllCaps="false"
+                    android:textColor="@color/textcolor"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/burgerlist"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shadow_button"
+                    android:drawableTop="@drawable/ic_burger"
+                    android:fontFamily="@font/perpetua_bold"
+                    android:text="Burger"
+                    android:textAllCaps="false"
+                    android:textColor="@color/textcolor"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/maincourselist"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shadow_button"
+                    android:drawableTop="@drawable/ic_dinner"
+                    android:fontFamily="@font/perpetua_bold"
+                    android:text="Main Course"
+                    android:textAllCaps="false"
+                    android:textColor="@color/textcolor"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/pizzalist"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shadow_button"
+                    android:drawableTop="@drawable/ic_pizza"
+                    android:fontFamily="@font/perpetua_bold"
+                    android:text="Pizza"
+                    android:textAllCaps="false"
+                    android:textColor="@color/textcolor"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/drinklist"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/shadow_button"
+                    android:drawableTop="@drawable/ic_soda"
+                    android:fontFamily="@font/perpetua_bold"
+                    android:text="Drinks"
+                    android:textAllCaps="false"
+                    android:textColor="@color/textcolor"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
