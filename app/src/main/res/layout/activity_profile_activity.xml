@@ -8,11 +8,243 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        app:itemIconTint="@color/nav_color"
-        app:itemIconSize="30dp"
         android:background="@drawable/nav_bar_round"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@color/nav_color"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        android:padding="3dp"
+        android:scrollbars="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="356dp"
+            android:layout_height="374dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="239dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="28dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/blur_profile_background" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile"
+                android:layout_width="196dp"
+                android:layout_height="146dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="47dp"
+                android:layout_marginTop="178dp"
+                android:layout_marginEnd="45dp"
+                android:alpha="20"
+                android:src="@drawable/hugh"
+                app:civ_border_color="#000000"
+                app:civ_border_width="4dp" />
+
+            <ImageView
+                android:id="@+id/editprofile"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="209dp"
+                android:layout_marginTop="292dp"
+                android:layout_marginEnd="108dp"
+                android:layout_marginBottom="38dp"
+                app:srcCompat="@android:drawable/ic_menu_camera" />
+
+            <ImageView
+                android:id="@+id/logout"
+                android:layout_width="25dp"
+                android:layout_height="34dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="319dp"
+                android:layout_marginTop="31dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="38dp"
+                android:src="@drawable/ic_logout" />
+
+            <TextView
+                android:id="@+id/heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="147dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginEnd="144dp"
+                android:fontFamily="@font/perpetua_bold"
+                android:shadowColor="#F5FAFA"
+                android:text="Profile"
+                android:textColor="#FFFFFF"
+                android:textSize="12pt" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/inputfield"
+            android:fontFamily="@font/perpetua_bold"
+            android:hint="username"
+            android:text="Manish Pandit"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="12pt"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+        <ImageView
+            android:id="@+id/edit_username"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="18dp"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="@+id/username"
+            app:layout_constraintEnd_toEndOf="@+id/username" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/inputfield"
+            android:fontFamily="@font/perpetua_bold"
+            android:hint="email"
+            android:text="mkmk6499@gmail.com"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="12pt"
+            app:layout_constraintTop_toBottomOf="@+id/username" />
+
+        <ImageView
+            android:id="@+id/edit_email"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="18dp"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="@+id/email"
+            app:layout_constraintEnd_toEndOf="@+id/email" />
+
+        <TextView
+            android:id="@+id/phonenumber"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/inputfield"
+            android:fontFamily="@font/perpetua_bold"
+            android:hint="Phone number"
+            android:text="+918310092697"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="12pt"
+            app:layout_constraintTop_toBottomOf="@+id/email" />
+
+        <ImageView
+            android:id="@+id/edit_phonenumber"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="18dp"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="@+id/phonenumber"
+            app:layout_constraintEnd_toEndOf="@+id/phonenumber" />
+
+        <TextView
+            android:id="@+id/previous_order"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/inputfield"
+            android:fontFamily="@font/perpetua_bold"
+            android:text="Previous Orders"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="12pt"
+            app:layout_constraintTop_toBottomOf="@+id/phonenumber" />
+
+        <ImageView
+            android:id="@+id/previous_order_symbol"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="18dp"
+            android:src="@drawable/ic_previous_order"
+            app:layout_constraintBottom_toBottomOf="@+id/previous_order"
+            app:layout_constraintEnd_toEndOf="@+id/previous_order" />
+
+        <TextView
+            android:id="@+id/card_detail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/inputfield"
+            android:fontFamily="@font/perpetua_bold"
+            android:hint="Phone number"
+            android:text="Payment Options"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="12pt"
+            app:layout_constraintTop_toBottomOf="@+id/previous_order" />
+
+        <ImageView
+            android:id="@+id/card_detail_symbol"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="18dp"
+            android:src="@drawable/ic_payment"
+            app:layout_constraintBottom_toBottomOf="@+id/card_detail"
+            app:layout_constraintEnd_toEndOf="@+id/card_detail" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

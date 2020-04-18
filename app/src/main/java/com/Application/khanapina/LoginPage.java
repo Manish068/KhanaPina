@@ -52,7 +52,7 @@ public class LoginPage extends AppCompatActivity {
         //getting the preferences
         sharedPreferences=getSharedPreferences("user_number",MODE_PRIVATE);
         intent=new Intent(LoginPage.this,MainActivity.class);
-        //check if we are logged in with mobile the it will open main page other wise login page
+        //check if we are logged in with mobile then it will open main page other wise login page
         if(sharedPreferences.contains("MOBILE")){
             startActivity(intent);
         }

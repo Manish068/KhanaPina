@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     SharedPreferences sharedPreferences;
-    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         //for save the login status once login don't have to login again this is step2
         //step 1 is in Login page
         sharedPreferences=getSharedPreferences("user_number",MODE_PRIVATE);
-        intent=new Intent(MainActivity.this,LoginPage.class);
+
 
         //initialize the navigation view
         BottomNavigationView bottomNavigationView=(BottomNavigationView)findViewById(R.id.bottom_navigation);
@@ -70,13 +69,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-    }
-
-    public void logout(View view) {
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.clear();
-        editor.commit();
-        startActivity(intent);
     }
 
 }

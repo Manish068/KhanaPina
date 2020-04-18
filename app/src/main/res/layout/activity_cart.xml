@@ -15,4 +15,5 @@
         android:background="@drawable/nav_bar_round"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
