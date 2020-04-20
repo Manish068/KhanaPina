@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
@@ -21,6 +23,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.PrivateKey;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +40,7 @@ public class LoginPage extends AppCompatActivity {
     //Firebase Tool Declaration
     PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationStateChangedCallbacks;
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore fStore;
 
     //for step 1 we declare shared preferences to store the value and save user login session
     //step 2 is in MainActivity page
@@ -46,9 +52,11 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
 
-        PhoneNumber=(EditText)findViewById(R.id.contacnumber);
-        code=(EditText)findViewById(R.id.code);
+        PhoneNumber=findViewById(R.id.contacnumber);
+        code=findViewById(R.id.code);
         firebaseAuth=FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
         //getting the preferences
         sharedPreferences=getSharedPreferences("user_number",MODE_PRIVATE);
         intent=new Intent(LoginPage.this,MainActivity.class);
@@ -112,15 +120,35 @@ public class LoginPage extends AppCompatActivity {
                     //saving the data in shared preferences so that we can load it in other activity
                     SharedPreferences.Editor editor=sharedPreferences.edit();
                     editor.putString("MOBILE",num);
-                    editor.commit();
-                     startActivity(intent);
-                    finish();
+                    editor.apply();
+                    checkUserProfile();
                 }else{
                     Toast.makeText(LoginPage.this, "Error using Otp Login", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+    }
+    private void checkUserProfile() {
+        DocumentReference docRef = fStore.collection("users").document(firebaseAuth.getCurrentUser().getUid());
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                    finish();
+                }else {
+                    //Toast.makeText(Register.this, "Profile Do not Exists.", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(),RegisterPage.class));
+                    finish();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(LoginPage.this, "Profile Do Not Exists", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

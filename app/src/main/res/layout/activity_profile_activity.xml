@@ -54,7 +54,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="28dp"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/blur_profile_background" />
+                android:src="@drawable/blur_profile_background" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile"
@@ -124,22 +124,12 @@
             android:layout_marginEnd="2dp"
             android:background="@drawable/inputfield"
             android:fontFamily="@font/perpetua_bold"
-            android:hint="username"
-            android:text="Manish Pandit"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="12pt"
             app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
-        <ImageView
-            android:id="@+id/edit_username"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="18dp"
-            android:src="@drawable/ic_edit"
-            app:layout_constraintBottom_toBottomOf="@+id/username"
-            app:layout_constraintEnd_toEndOf="@+id/username" />
+
 
         <TextView
             android:id="@+id/email"
@@ -150,8 +140,6 @@
             android:layout_marginEnd="2dp"
             android:background="@drawable/inputfield"
             android:fontFamily="@font/perpetua_bold"
-            android:hint="email"
-            android:text="mkmk6499@gmail.com"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="12pt"
@@ -176,8 +164,6 @@
             android:layout_marginEnd="2dp"
             android:background="@drawable/inputfield"
             android:fontFamily="@font/perpetua_bold"
-            android:hint="Phone number"
-            android:text="+918310092697"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="12pt"
@@ -227,7 +213,6 @@
             android:layout_marginEnd="2dp"
             android:background="@drawable/inputfield"
             android:fontFamily="@font/perpetua_bold"
-            android:hint="Phone number"
             android:text="Payment Options"
             android:textAlignment="center"
             android:textColor="#000000"
