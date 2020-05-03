@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,74 +27,82 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.List;
+import com.google.firebase.firestore.SetOptions;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
 public class profile_activity extends AppCompatActivity {
 
-    public static  final int IMAGE_CODE=1;
+    public static final int IMAGE_CODE = 1;
     CircleImageView circleImage;
-    ImageView imageView,logoutbutton;
+    ImageView imageView, logoutbutton;
     Uri imageuri;
-    SharedPreferences sharedPreferences;
+    SharedPreferences passwordsharedPreferences, sharedPreferences;
     Intent intent;
-    TextView tvUserName,tvEmail,tvPhoneNumber;
-    ImageView editEmail,editPhoneNumber;
-    EditText updateemail;
-    ImageButton saveUserDataButton,cancelUserDataButton;
+    TextView tvUserName, tvEmail, tvPhoneNumber;
+    ImageView editEmail, editPhoneNumber;
+    EditText updateemail, verifytext;
+    ImageButton saveUserDataButton, cancelUserDataButton;
 
-    String mUserName,mEmail,mPhoneNumber;
+    String mUserName, mEmail, mPhoneNumber;
 
     View popupInputDialogView;
     //firebasefirestore
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userID;
+    String new_email, saved_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_activity);
 
-        sharedPreferences=getSharedPreferences("user_number",MODE_PRIVATE);
-        intent=new Intent(profile_activity.this,LoginPage.class);
-
+        sharedPreferences = getSharedPreferences("user_number", MODE_PRIVATE);
+        passwordsharedPreferences = getSharedPreferences("PASSWORD", MODE_PRIVATE);
+        intent = new Intent(profile_activity.this, LoginPage.class);
 
 
         //assigning to ids's or implementation of button,textview,editview,imageview etc
-        RelativeLayout rr=findViewById(R.id.relativeLayout) ;
-        circleImage=rr.findViewById(R.id.profile);
-        imageView= findViewById(R.id.editprofile);
-        logoutbutton=findViewById(R.id.logout);
-        tvUserName=findViewById(R.id.username);
-        tvEmail=findViewById(R.id.email);
-        tvPhoneNumber=findViewById(R.id.phonenumber);
-        editEmail=findViewById(R.id.edit_email);
-        editPhoneNumber=findViewById(R.id.edit_phonenumber);
-
-
+        RelativeLayout rr = findViewById(R.id.relativeLayout);
+        circleImage = rr.findViewById(R.id.profile);
+        imageView = findViewById(R.id.editprofile);
+        logoutbutton = findViewById(R.id.logout);
+        tvUserName = findViewById(R.id.username);
+        tvEmail = findViewById(R.id.email);
+        tvPhoneNumber = findViewById(R.id.phonenumber);
+        editEmail = findViewById(R.id.edit_email);
+        editPhoneNumber = findViewById(R.id.edit_phonenumber);
 
 
         //implementation of firebase firestore
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
-        userID = fAuth.getCurrentUser().getUid();
+        FirebaseUser mFirebaseUser = fAuth.getCurrentUser();
+        if (mFirebaseUser != null) {
+            userID = mFirebaseUser.getUid(); //Do what you need to do with the id
+        }
 
 
-
-        editEmail.setOnClickListener(new View.OnClickListener() {
+        //working it on this later
+       editEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Create a AlertDialog Builder.
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(profile_activity.this);
-                initdailogviewcontrol();
+                //initdailogviewcontrol();
                 // Set the inflated layout view object to the AlertDialog builder.
                 alertDialogBuilder.setView(popupInputDialogView);
 
@@ -105,22 +114,46 @@ public class profile_activity extends AppCompatActivity {
                 saveUserDataButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String email = updateemail.getText().toString();
-                        Toast.makeText(getApplicationContext(),"yes clicked",Toast.LENGTH_SHORT).show();
+                        new_email = updateemail.getText().toString();
+                        saved_password = passwordsharedPreferences.getString("PASSWORD", null);
 
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        // Get auth credentials from the user for re-authentication
+
+                        AuthCredential re_auth_credential = EmailAuthProvider.getCredential(new_email, saved_password);
+
+                        // Prompt the user to re-provide their sign-in credentials
+                        user.reauthenticate(re_auth_credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                user.updateEmail(new_email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            //update_email(new_email);
+                                            alertDialog.cancel();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), " Error", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                }
+                            }
+                        });
                     }
                 });
+
 
                 cancelUserDataButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         alertDialog.cancel();
-                        Toast.makeText(getApplicationContext(),"cancel clicked",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "cancel clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
-
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -132,15 +165,17 @@ public class profile_activity extends AppCompatActivity {
         logoutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor=sharedPreferences.edit();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.apply();
+                FirebaseAuth.getInstance().signOut();
                 startActivity(intent);
+                finish();
             }
         });
 
         //initialize the navigation view
-        BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //set home selected
         bottomNavigationView.setSelectedItemId(R.id.profile);
@@ -149,22 +184,22 @@ public class profile_activity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.action_favorites:
-                        startActivity(new Intent(getApplicationContext(),Favdish.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), Favdish.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.cart:
-                        startActivity(new Intent(getApplicationContext(),cart.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), cart.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.editlocation:
-                        startActivity(new Intent(getApplicationContext(),location.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), location.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.profile:
                         return true;
@@ -173,9 +208,20 @@ public class profile_activity extends AppCompatActivity {
             }
         });
 
+        ShowPhoneNumber();
+    }
+
+    //working on it this later
+   /* public void update_email(String newemail) {
+        userID = fAuth.getCurrentUser().getUid();
+        DocumentReference docRef = fStore.collection("users").document(userID);
+        Map<String, Object> user = new HashMap<>();
+        user.put("Email", newemail);
+        docRef.set(user, SetOptions.merge());
     }
 
     private void initdailogviewcontrol() {
+
         // Get layout inflater object.
         LayoutInflater layoutInflater = LayoutInflater.from(profile_activity.this);
 
@@ -188,42 +234,15 @@ public class profile_activity extends AppCompatActivity {
         saveUserDataButton = popupInputDialogView.findViewById(R.id.yes_button);
         cancelUserDataButton = popupInputDialogView.findViewById(R.id.cancel_button);
 
-        // Display values from the main activity list view in user input edittext.
-
-    }
-
-
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        ShowPhoneNumber();
-    }
-
-    public void updateEmail() {
-        // [START update_email]
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        user.updateEmail("user@example.com")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-
-                        }
-                    }
-                });
-        // [END update_email]
-    }
+    }*/
 
 
     private void ShowPhoneNumber() {
-        DocumentReference docRef =fStore.collection("users").document(userID);
+        DocumentReference docRef = fStore.collection("users").document(userID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
+                if (documentSnapshot.exists()) {
                     mUserName = documentSnapshot.getString("Username");
                     mEmail = documentSnapshot.getString("Email");
                     mPhoneNumber = fAuth.getCurrentUser().getPhoneNumber();
@@ -233,8 +252,8 @@ public class profile_activity extends AppCompatActivity {
                     tvUserName.setText(mUserName);
                     tvEmail.setText(mEmail);
 
-                }else {
-                    Toast.makeText(getApplicationContext(),"Error! showing details..",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error! showing details..", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -242,20 +261,20 @@ public class profile_activity extends AppCompatActivity {
     }
 
     private void openimageform() {
-        Intent intent=new Intent();
+        Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,IMAGE_CODE);
+        startActivityForResult(intent, IMAGE_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==IMAGE_CODE && resultCode==RESULT_OK &&
-                data !=null && data.getData() != null){
+        if (requestCode == IMAGE_CODE && resultCode == RESULT_OK &&
+                data != null && data.getData() != null) {
 
-            imageuri=data.getData();
+            imageuri = data.getData();
             circleImage.setImageURI(imageuri);
         }
     }

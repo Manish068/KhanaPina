@@ -36,7 +36,7 @@ public class RegisterPage extends AppCompatActivity  {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userID,email,password;
-    SharedPreferences sharedPreferences;
+    SharedPreferences passwordsharedPreferences,sharedPreferences;
     Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,7 @@ public class RegisterPage extends AppCompatActivity  {
         RegEmail =  findViewById(R.id.registerEmail);
         RegPassword = findViewById(R.id.registerPassword);
 
+        passwordsharedPreferences=getSharedPreferences("PASSWORD",MODE_PRIVATE);
         sharedPreferences=getSharedPreferences("user_number",MODE_PRIVATE);
         intent=new Intent(RegisterPage.this,LoginPage.class);
 
@@ -93,6 +94,9 @@ public class RegisterPage extends AppCompatActivity  {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = task.getResult().getUser();
+                            SharedPreferences.Editor passwordeditor=passwordsharedPreferences.edit();
+                            passwordeditor.putString("PASSWORD",password);
+                            passwordeditor.apply();
                             Registeruser();
                         } else {
                             Toast.makeText(RegisterPage.this, "Authentication failed.",
