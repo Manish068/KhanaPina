@@ -7,8 +7,10 @@
     <string name="main_course">Main Course</string>
     <string name="drinks">Drinks</string>
     <string name="location_bar">Location Bar</string>
-    <string name="tagline2">Eat It \n\t\t\tUntil Your\nTummy Get's Full</string>
+    <string name="untill_your">Until your</string>
+    <string name="tummy_get_s_full">Tummy get\'s Full.</string>
     <string name="created_by_manish">Created by @Manish</string>
+    <string name="eat_it">Eat It,</string>
     <string name="subtitle">Ready to order from top restaurants?</string>
     <string name="phone_number">Phone number</string>
     <string name="login">Login</string>

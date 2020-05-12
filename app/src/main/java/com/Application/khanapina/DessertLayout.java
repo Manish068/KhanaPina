@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,11 +25,22 @@ public class DessertLayout extends AppCompatActivity {
     DessertAdapter dessertAdapter;
     ArrayList<Dessert_item> dessertItems;
     DatabaseReference reference;
+    ImageView backbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dessert_layout);
+
+        backbutton=findViewById(R.id.back_button);
+
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(new Intent(DessertLayout.this,MainActivity.class));
+            }
+        });
 
         dessert_recyclerview=findViewById(R.id.dessert_recyclerview);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
@@ -51,7 +65,7 @@ public class DessertLayout extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.e("dessertDatabaseError", "onCancelled: ",databaseError.toException() );
             }
         });
     }

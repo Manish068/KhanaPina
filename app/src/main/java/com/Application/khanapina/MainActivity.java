@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.d("mymessage", "Error getting documents: "+e.getMessage().toString());
+                                Log.d("mymessage", "Error getting documents: "+ e.getMessage());
                             }
                         });
                     }

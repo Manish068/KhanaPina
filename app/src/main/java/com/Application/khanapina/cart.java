@@ -17,7 +17,7 @@ public class cart extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         //initialize the navigation view
-        BottomNavigationView bottomNavigationView=(BottomNavigationView)findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView= findViewById(R.id.bottom_navigation);
 
         //set home selected
         bottomNavigationView.setSelectedItemId(R.id.cart);

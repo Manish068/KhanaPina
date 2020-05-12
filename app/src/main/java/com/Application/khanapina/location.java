@@ -17,7 +17,7 @@ public class location extends AppCompatActivity {
         setContentView(R.layout.activity_location);
 
         //initialize the navigation view
-        BottomNavigationView bottomNavigationView=(BottomNavigationView)findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView= findViewById(R.id.bottom_navigation);
 
         //set home selected
         bottomNavigationView.setSelectedItemId(R.id.editlocation);
