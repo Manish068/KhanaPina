@@ -13,7 +13,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/resturant_list_cardview"
             android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_height="110dp"
             android:elevation="4dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="20dp">
@@ -39,6 +39,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:text="Restaurant Name"
+            android:fontFamily="@font/museosans_500"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -48,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:fontFamily="@font/museosans_500"
             android:layout_marginTop="5dp"
             android:text="Cousine"/>
         <View
@@ -69,12 +71,13 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:text="Rating"
+                android:fontFamily="@font/museosans_500"
                 android:textColor="@color/yellow"
                 android:textSize="20sp"
                 />
 
             <LinearLayout
-                android:layout_width="60dp"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:orientation="vertical">
@@ -82,7 +85,9 @@
                     android:id="@+id/rating_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="4.5"
+                    android:fontFamily="@font/museosans_500"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     />
@@ -99,6 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Very Good"
+                    android:layout_gravity="center"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     />
@@ -114,23 +120,26 @@
                 android:elevation="2dp" />
 
             <LinearLayout
-                android:layout_width="100dp"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
                     android:text="Votes"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/museosans_500"
                     />
                 <TextView
                     android:id="@+id/votes_count"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
                     android:layout_marginTop="1dp"
+                    android:layout_gravity="center"
                     android:text="900"
+                    android:fontFamily="@font/museosans_500"
                     android:textAlignment="center"
                     />
             </LinearLayout>

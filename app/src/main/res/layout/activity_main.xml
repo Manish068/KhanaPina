@@ -4,46 +4,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/MainActivity_container"
     tools:context=".MainActivity">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="360dp"
         android:layout_height="50dp"
-        app:itemIconTint="@color/nav_color"
-        app:itemIconSize="30dp"
         android:background="@drawable/nav_bar_round"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@color/nav_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_menu"
-        tools:ignore="MissingConstraints" >
+        tools:ignore="MissingConstraints">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/location_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        app:cardElevation="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/museosans_500"
+                android:text="@string/location_bar"
+                android:textSize="40sp"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:scrollbars="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/location_bar">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:elevation="10dp"
             android:padding="3dp"
             android:scrollbars="vertical">
+
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/bannerslider"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="5dp"
+                android:elevation="30dp"
+                app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteY="65dp" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_marginTop="300dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/bannerslider">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -52,66 +89,69 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/dessert_layout"
+                        style="?buttonBarButtonStyle"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/shadow_button"
                         android:drawableTop="@drawable/ic_dessert"
                         android:fontFamily="@font/perpetua_bold"
-                        style="?buttonBarButtonStyle"
-                        android:text="Dessert"
+                        android:onClick="OpenDessertLayout"
                         android:textAllCaps="false"
+                        android:text="@string/dessert"
                         android:textColor="@color/textcolor"
                         android:textSize="14sp" />
 
                     <Button
+                        style="?buttonBarButtonStyle"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginStart="10dp"
-                        style="?buttonBarButtonStyle"
                         android:background="@drawable/shadow_button"
                         android:drawableTop="@drawable/ic_burger"
                         android:fontFamily="@font/perpetua_bold"
-                        android:text="Burger"
+                        android:text="@string/burger"
                         android:textAllCaps="false"
+
                         android:textColor="@color/textcolor"
                         android:textSize="13sp" />
 
                     <Button
+                        style="?buttonBarButtonStyle"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginStart="10dp"
-                        style="?buttonBarButtonStyle"
                         android:background="@drawable/shadow_button"
                         android:drawableTop="@drawable/ic_dinner"
                         android:fontFamily="@font/perpetua_bold"
-                        android:text="Main Course"
+                        android:text="@string/main_course"
                         android:textAllCaps="false"
                         android:textColor="@color/textcolor"
                         android:textSize="13sp" />
 
                     <Button
+                        style="?buttonBarButtonStyle"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginStart="10dp"
-                        style="?buttonBarButtonStyle"
                         android:background="@drawable/shadow_button"
                         android:drawableTop="@drawable/ic_pizza"
                         android:fontFamily="@font/perpetua_bold"
-                        android:text="Pizza"
+                        android:text="@string/pizza"
                         android:textAllCaps="false"
                         android:textColor="@color/textcolor"
                         android:textSize="14sp" />
 
                     <Button
+                        style="?buttonBarButtonStyle"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/shadow_button"
                         android:drawableTop="@drawable/ic_soda"
                         android:fontFamily="@font/perpetua_bold"
-                        android:text="Drinks"
-                        style="?buttonBarButtonStyle"
+                        android:text="@string/drinks"
                         android:textAllCaps="false"
                         android:textColor="@color/textcolor"
                         android:textSize="14sp" />
@@ -120,30 +160,61 @@
 
             </HorizontalScrollView>
 
+
             <TextView
                 android:id="@+id/hotdeal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/perpetua_bold"
-                android:text="Top Restaurants"
+                android:text="@string/top_restaurants"
                 android:textColor="@color/yellow"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
-                />
-
+                app:layout_constraintTop_toBottomOf="@id/horizontalScrollView" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_of_top_restaurant"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/hotdeal" />
 
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/list_of_top_restaurant">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/museosans_500"
+                        android:text="@string/tagline2"
+                        android:textColor="@color/yellow"
+                        android:textSize="40sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/museosans_500"
+                        android:text="@string/created_by_manish"
+                        android:textAlignment="center"
+                        android:textColor="@color/textcolor"
+                        android:textSize="20sp"
+                        android:textStyle="italic"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

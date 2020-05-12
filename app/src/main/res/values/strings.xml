@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Khana Pina</string>
+    <string name="dessert">Dessert</string>
+    <string name="pizza">Pizza</string>
+    <string name="top_restaurants">Top Restaurants</string>
+    <string name="burger">Burger</string>
+    <string name="main_course">Main Course</string>
+    <string name="drinks">Drinks</string>
+    <string name="location_bar">Location Bar</string>
+    <string name="tagline2">Eat It \n\t\t\tUntil Your\nTummy Get's Full</string>
+    <string name="created_by_manish">Created by @Manish</string>
+    <string name="subtitle">Ready to order from top restaurants?</string>
+    <string name="phone_number">Phone number</string>
+    <string name="login">Login</string>
+    <string name="stdcode">+91</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sweet_and_dessert"><![CDATA[Sweet &\nDessert]]></string>
+    <string name="todo">TODO</string>
 </resources>

@@ -35,7 +35,7 @@ public class LoginPage extends AppCompatActivity {
     //EditText And buttons declaration
      EditText PhoneNumber;
      EditText code;
-    String mobilenumber;
+     String mobilenumber;
 
     //Firebase Tool Declaration
     PhoneAuthProvider.OnVerificationStateChangedCallbacks verificationStateChangedCallbacks;
@@ -91,7 +91,6 @@ public class LoginPage extends AppCompatActivity {
             Toast.makeText(LoginPage.this,"Enter correct number",Toast.LENGTH_SHORT).show();
         }
         else{
-
             VerifyMobileNumber(mobilenumber);
         }
     }
