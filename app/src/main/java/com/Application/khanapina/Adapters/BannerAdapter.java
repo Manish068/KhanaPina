@@ -1,4 +1,4 @@
-package com.Application.khanapina;
+package com.Application.khanapina.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.Application.khanapina.ModelClass.Banner;
+import com.Application.khanapina.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -34,8 +36,7 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.BannerView
     public BannerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.image_slide,parent,false);
-        BannerViewHolder bannerViewHolder=new BannerViewHolder(v);
-        return bannerViewHolder;
+        return new BannerViewHolder(v);
     }
 
     @Override

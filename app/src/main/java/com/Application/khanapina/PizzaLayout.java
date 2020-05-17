@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.Application.khanapina.Adapters.DessertAdapter;
+import com.Application.khanapina.Adapters.BurgerAdapter;
 import com.Application.khanapina.ModelClass.Menu_item;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,18 +21,18 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class DessertLayout extends AppCompatActivity {
+public class PizzaLayout extends AppCompatActivity {
 
-    RecyclerView dessert_recyclerview;
-    DessertAdapter dessertAdapter;
-    ArrayList<Menu_item> dessertItems;
+    RecyclerView pizza_recyclerview;
+    BurgerAdapter pizzaAdapter;
+    ArrayList<Menu_item> pizzaItems;
     DatabaseReference reference;
     ImageView backbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dessert_layout);
+        setContentView(R.layout.activity_pizza_layout);
 
         backbutton = findViewById(R.id.back_button);
 
@@ -40,26 +40,26 @@ public class DessertLayout extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                startActivity(new Intent(DessertLayout.this, MainActivity.class));
+                startActivity(new Intent(PizzaLayout.this, MainActivity.class));
             }
         });
 
-        dessert_recyclerview = findViewById(R.id.dessert_recyclerview);
+        pizza_recyclerview = findViewById(R.id.pizza_recyclerview);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        dessert_recyclerview.setLayoutManager(gridLayoutManager);
-        dessertItems = new ArrayList<>();
+        pizza_recyclerview.setLayoutManager(gridLayoutManager);
+        pizzaItems = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference().child("Restaurants");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    for (DataSnapshot snapshot : dataSnapshot1.child("menu").child("Desserts").getChildren()) {
+                    for (DataSnapshot snapshot : dataSnapshot1.child("menu/Pizza").getChildren()) {
                         Menu_item item = snapshot.getValue(Menu_item.class);
-                        dessertItems.add(item);
+                        pizzaItems.add(item);
                     }
-                    dessertAdapter = new DessertAdapter(DessertLayout.this, dessertItems);
-                    dessert_recyclerview.setAdapter(dessertAdapter);
+                    pizzaAdapter = new BurgerAdapter(PizzaLayout.this, pizzaItems);
+                    pizza_recyclerview.setAdapter(pizzaAdapter);
                 }
             }
 

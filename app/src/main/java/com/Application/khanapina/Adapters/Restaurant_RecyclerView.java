@@ -1,4 +1,4 @@
-package com.Application.khanapina;
+package com.Application.khanapina.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,15 +11,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Application.khanapina.R;
+import com.Application.khanapina.ModelClass.Restaurant_info;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class Restaurant_RecyclerView extends RecyclerView.Adapter<Restaurant_RecyclerView.ResturantView_holder> {
 
-    Context mcontext;
-    ArrayList<Restaurant_info> mrestaurant_info;
-    View v;
+    private Context mcontext;
+    private ArrayList<Restaurant_info> mrestaurant_info;
+    private View v;
 
     public Restaurant_RecyclerView(Context mcontext, ArrayList<Restaurant_info> mrestaurant_info) {
         this.mcontext = mcontext;
@@ -30,8 +32,7 @@ public class Restaurant_RecyclerView extends RecyclerView.Adapter<Restaurant_Rec
     @Override
     public ResturantView_holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         v= LayoutInflater.from(mcontext).inflate(R.layout.restaurant_card_view,parent,false);
-        ResturantView_holder resturantView_holder=new ResturantView_holder(v);
-        return resturantView_holder;
+        return new ResturantView_holder(v);
     }
 
     @Override

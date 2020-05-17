@@ -40,39 +40,83 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:elevation="20dp"
+                        android:contentDescription="@string/item_image"
                         android:scaleType="fitXY" />
                 </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/item_price"
+                    android:layout_width="50dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="center"
+                    android:textSize="12sp" />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="-10dp"
                     android:layout_marginEnd="5dp">
 
                     <TextView
                         android:id="@+id/item_name"
                         android:layout_width="70dp"
-                        android:layout_height="15dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="10dp"
                         android:gravity="center|start"
                         android:maxLines="2"
-                        android:text="Item_Name"
                         android:textSize="12sp" />
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="40dp"
-                        android:layout_height="15dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="20dp">
+                        android:layout_width="50dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="10dp">
 
                         <TextView
+                            android:id="@+id/decrement_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:layout_marginStart="3dp"
+                            android:gravity="center|bottom"
+                            android:text="-"
+                            android:textSize="30sp" />
+
+                        <TextView
+                            android:id="@+id/increment_item"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|center"
+                            android:layout_marginEnd="2dp"
+                            android:gravity="bottom"
+                            android:text="+"
+                            android:textSize="30sp" />
+
+                        <TextView
+                            android:id="@+id/item_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="2dp"
+                            android:maxLength="2"
+                            android:text="0"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/addItemButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="Add"
-                            android:textSize="12sp" />
+                            android:textColor="@color/RightGreen"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
                     </com.google.android.material.card.MaterialCardView>
 

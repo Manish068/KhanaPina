@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.Application.khanapina.Adapters.DessertAdapter;
+import com.Application.khanapina.Adapters.MainCourseAdapter;
 import com.Application.khanapina.ModelClass.Menu_item;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,45 +21,48 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class DessertLayout extends AppCompatActivity {
+public class MainCourseLayout extends AppCompatActivity {
 
-    RecyclerView dessert_recyclerview;
-    DessertAdapter dessertAdapter;
-    ArrayList<Menu_item> dessertItems;
+    RecyclerView maincourse_recyclerview;
+    MainCourseAdapter mainCourseAdapter;
+    ArrayList<Menu_item> maincourseItems;
     DatabaseReference reference;
     ImageView backbutton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dessert_layout);
+        setContentView(R.layout.maincourse_layout);
 
         backbutton = findViewById(R.id.back_button);
 
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                startActivity(new Intent(DessertLayout.this, MainActivity.class));
+                startActivity(new Intent(MainCourseLayout.this, MainActivity.class));
             }
         });
 
-        dessert_recyclerview = findViewById(R.id.dessert_recyclerview);
+
+        maincourse_recyclerview = findViewById(R.id.maincourse_recyclerview);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        dessert_recyclerview.setLayoutManager(gridLayoutManager);
-        dessertItems = new ArrayList<>();
+        maincourse_recyclerview.setLayoutManager(gridLayoutManager);
+        maincourseItems = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference().child("Restaurants");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    for (DataSnapshot snapshot : dataSnapshot1.child("menu").child("Desserts").getChildren()) {
-                        Menu_item item = snapshot.getValue(Menu_item.class);
-                        dessertItems.add(item);
+                    for (DataSnapshot snapshot : dataSnapshot1.child("menu/MainCourse").getChildren()) {
+                        for (DataSnapshot dataSnapshot2 : snapshot.getChildren()) {
+                            Menu_item item = dataSnapshot2.getValue(Menu_item.class);
+                            maincourseItems.add(item);
+                        }
+                        mainCourseAdapter = new MainCourseAdapter(MainCourseLayout.this, maincourseItems);
+                        maincourse_recyclerview.setAdapter(mainCourseAdapter);
                     }
-                    dessertAdapter = new DessertAdapter(DessertLayout.this, dessertItems);
-                    dessert_recyclerview.setAdapter(dessertAdapter);
                 }
             }
 

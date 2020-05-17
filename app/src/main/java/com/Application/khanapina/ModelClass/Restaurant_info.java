@@ -1,4 +1,4 @@
-package com.Application.khanapina;
+package com.Application.khanapina.ModelClass;
 
 public class Restaurant_info {
     private String name;

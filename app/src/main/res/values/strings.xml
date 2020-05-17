@@ -20,4 +20,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sweet_and_dessert"><![CDATA[Sweet &\nDessert]]></string>
     <string name="todo">TODO</string>
+    <string name="hot_cold_drinks"><![CDATA[Hot & Cold\nDrinks]]></string>
+    <string name="back_description">back</string>
+    <string name="item_image">Item Image</string>
+    <string name="rating">Rating</string>
+    <string name="votes">Votes</string>
 </resources>

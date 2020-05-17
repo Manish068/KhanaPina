@@ -10,13 +10,16 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.Application.khanapina.Adapters.BannerAdapter;
+import com.Application.khanapina.Adapters.Restaurant_RecyclerView;
+import com.Application.khanapina.ModelClass.Banner;
+import com.Application.khanapina.ModelClass.Restaurant_info;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -154,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
                         firestore.collection("Banner").document(document.getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                Log.d("mymessage", "contains: "+documentSnapshot.getString("imageurl"));
                                 Banner_image_url(documentSnapshot.getString("imageurl"));
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -218,5 +220,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void OpenDessertLayout(View view) {
         startActivity(new Intent(this,DessertLayout.class));
+    }
+
+    public void OpenDrinksLayout(View view) {
+        startActivity(new Intent(this, DrinksLayout.class));
+    }
+
+    public void OpenBurgerLayout(View view) {
+        startActivity(new Intent(this, BurgerLayout.class));
+    }
+
+    public void OpenPizzaLayout(View view) {
+        startActivity(new Intent(this, PizzaLayout.class));
+    }
+
+    public void OpenMainCourseLayout(View view) {
+        startActivity(new Intent(this, MainCourseLayout.class));
     }
 }

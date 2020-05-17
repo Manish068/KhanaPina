@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.Application.khanapina">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,16 +13,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DessertLayout"/>
+        <activity android:name=".MainCourseLayout" />
+        <activity android:name=".PizzaLayout" />
+        <activity android:name=".BurgerLayout" />
+        <activity android:name=".DrinksLayout" />
+        <activity android:name=".DessertLayout" />
         <activity android:name=".RegisterPage" />
         <activity android:name=".profile_activity" />
         <activity android:name=".location" />
         <activity android:name=".cart" />
+        <activity
+            android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
+            android:launchMode="standard"
+            tools:replace="android:launchMode" />
         <activity android:name=".Favdish" />
         <activity android:name=".Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
