@@ -54,7 +54,7 @@ public class DrinksLayout extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    for (DataSnapshot snapshot : dataSnapshot1.child("menu/Beverages/Hot and Cold").getChildren()) {
+                    for (DataSnapshot snapshot : dataSnapshot1.child("menu/Drinks").getChildren()) {
                         Menu_item item = snapshot.getValue(Menu_item.class);
                         drinksItems.add(item);
                     }

@@ -1,6 +1,9 @@
 package com.Application.khanapina.ModelClass;
 
-public class Restaurant_info {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Restaurant_info implements Parcelable {
     private String name;
     private String cuisines;
     private String votes;
@@ -13,16 +16,38 @@ public class Restaurant_info {
     public Restaurant_info() {
     }
 
-    public Restaurant_info(String name, String cuisines, String votes, String rating_text, String aggregate_rating,String photos_url,String rating_color) {
+    public static final Creator<Restaurant_info> CREATOR = new Creator<Restaurant_info>() {
+        @Override
+        public Restaurant_info createFromParcel(Parcel in) {
+            return new Restaurant_info(in);
+        }
+
+        @Override
+        public Restaurant_info[] newArray(int size) {
+            return new Restaurant_info[size];
+        }
+    };
+
+
+    public Restaurant_info(String name, String cuisines, String votes, String rating_text, String aggregate_rating, String photos_url, String rating_color) {
         this.name = name;
         this.cuisines = cuisines;
         this.votes = votes;
         this.rating_text = rating_text;
         this.aggregate_rating = aggregate_rating;
-        this.photos_url=photos_url;
-        this.rating_color=rating_color;
+        this.photos_url = photos_url;
+        this.rating_color = rating_color;
     }
 
+    protected Restaurant_info(Parcel in) {
+        name = in.readString();
+        cuisines = in.readString();
+        votes = in.readString();
+        rating_text = in.readString();
+        aggregate_rating = in.readString();
+        photos_url = in.readString();
+        rating_color = in.readString();
+    }
 
     public String getName() {
         return name;
@@ -78,5 +103,21 @@ public class Restaurant_info {
 
     public void setRating_color(String rating_color) {
         this.rating_color = rating_color;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(cuisines);
+        dest.writeString(votes);
+        dest.writeString(rating_text);
+        dest.writeString(aggregate_rating);
+        dest.writeString(photos_url);
+        dest.writeString(rating_color);
     }
 }

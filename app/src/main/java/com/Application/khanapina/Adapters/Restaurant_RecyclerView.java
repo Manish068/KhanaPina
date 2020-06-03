@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.Application.khanapina.R;
 import com.Application.khanapina.ModelClass.Restaurant_info;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,17 +23,20 @@ public class Restaurant_RecyclerView extends RecyclerView.Adapter<Restaurant_Rec
     private Context mcontext;
     private ArrayList<Restaurant_info> mrestaurant_info;
     private View v;
+    private ResturantView_holder.OnNoteListener mOnNoteListner;
 
-    public Restaurant_RecyclerView(Context mcontext, ArrayList<Restaurant_info> mrestaurant_info) {
+
+    public Restaurant_RecyclerView(Context mcontext, ArrayList<Restaurant_info> mrestaurant_info, ResturantView_holder.OnNoteListener mOnNoteListner) {
         this.mcontext = mcontext;
         this.mrestaurant_info = mrestaurant_info;
+        this.mOnNoteListner = mOnNoteListner;
     }
 
     @NonNull
     @Override
     public ResturantView_holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        v= LayoutInflater.from(mcontext).inflate(R.layout.restaurant_card_view,parent,false);
-        return new ResturantView_holder(v);
+        v = LayoutInflater.from(mcontext).inflate(R.layout.restaurant_card_view, parent, false);
+        return new ResturantView_holder(v, mOnNoteListner);
     }
 
     @Override
@@ -62,17 +66,32 @@ public class Restaurant_RecyclerView extends RecyclerView.Adapter<Restaurant_Rec
         TextView tv_rating_text;
         TextView tv_votes;
 
+        OnNoteListener mOnNoteListener;
 
 
-        public ResturantView_holder(@NonNull View itemView) {
+        public ResturantView_holder(@NonNull View itemView, final OnNoteListener mOnNoteListener) {
             super(itemView);
-            restaurant_pic=itemView.findViewById(R.id.resturant_image);
-            tv_name=itemView.findViewById(R.id.resturant_name);
-            tv_cuisines=itemView.findViewById(R.id.cousines);
-            tv_aggregate_rating=itemView.findViewById(R.id.rating_number);
-            tv_rating_text=itemView.findViewById(R.id.rating_text);
-            tv_votes=itemView.findViewById(R.id.votes_count);
+            restaurant_pic = itemView.findViewById(R.id.resturant_image);
+            tv_name = itemView.findViewById(R.id.resturant_name);
+            tv_cuisines = itemView.findViewById(R.id.cousines);
+            tv_aggregate_rating = itemView.findViewById(R.id.rating_number);
+            tv_rating_text = itemView.findViewById(R.id.rating_text);
+            tv_votes = itemView.findViewById(R.id.votes_count);
+            this.mOnNoteListener = mOnNoteListener;
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    mOnNoteListener.onNoteClick(getAdapterPosition());
+
+                }
+            });
+
+        }
+
+        public interface OnNoteListener {
+            void onNoteClick(int position);
         }
     }
 }

@@ -1,15 +1,24 @@
 package com.Application.khanapina;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -20,6 +29,8 @@ import com.Application.khanapina.Adapters.BannerAdapter;
 import com.Application.khanapina.Adapters.Restaurant_RecyclerView;
 import com.Application.khanapina.ModelClass.Banner;
 import com.Application.khanapina.ModelClass.Restaurant_info;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,11 +46,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Restaurant_RecyclerView.ResturantView_holder.OnNoteListener {
+
+
+    //for location
+    private TextView fullAddress, Locality;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LinearLayout locationService;
+
 
     List<Banner> sliderItems;
     FirebaseFirestore firestore;
@@ -65,6 +85,50 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //for Location
+        locationService = findViewById(R.id.Location_service);
+        Locality = findViewById(R.id.tv_Address);
+        fullAddress = findViewById(R.id.tv_full_location);
+        Context context;
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        locationService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(MainActivity.this
+                        , Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+                            //initialize location
+                            Location location = task.getResult();
+                            if (location != null) {
+                                try {
+                                    Geocoder geocoder = new Geocoder(MainActivity.this
+                                            , Locale.getDefault());
+
+                                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+                                    Locality.setText(addresses.get(0).getLocality());
+
+                                    fullAddress.setText(addresses.get(0).getAddressLine(0));
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    //when permission denied
+                    ActivityCompat.requestPermissions(MainActivity.this
+                            , new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                }
+            }
+        });
+
+
         //for Banner
         Imagesliderfunction();
         //implementation of recyclerview for showing top restaurants
@@ -132,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                     mresturantinformation.add(mrest);
 
                 }
-                restaurant_recyclerView = new Restaurant_RecyclerView(MainActivity.this, mresturantinformation);
+                restaurant_recyclerView = new Restaurant_RecyclerView(MainActivity.this, mresturantinformation, MainActivity.this);
                 restaurant_list_recyvlerview.setAdapter(restaurant_recyclerView);
             }
 
@@ -141,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("msg", "onCancelled: " + databaseError.getMessage());
             }
         });
-
     }
 
     public void Imagesliderfunction() {
@@ -154,7 +217,8 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        firestore.collection("Banner").document(document.getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        firestore.collection("Banner").document(document.getId())
+                                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 Banner_image_url(documentSnapshot.getString("imageurl"));
@@ -162,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.d("mymessage", "Error getting documents: "+ e.getMessage());
+                                Log.d("mymessage", "Error getting documents: " + e.getMessage());
                             }
                         });
                     }
@@ -236,5 +300,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void OpenMainCourseLayout(View view) {
         startActivity(new Intent(this, MainCourseLayout.class));
+    }
+
+
+    @Override
+    public void onNoteClick(int position) {
+        Intent intent = new Intent(this, EachRestaurant.class);
+        intent.putExtra("selected_one", mresturantinformation.get(position));
+        startActivity(intent);
     }
 }
