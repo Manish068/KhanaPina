@@ -1,6 +1,7 @@
 package com.Application.khanapina.Adapters;
 
-import android.app.Activity;
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Application.khanapina.ModelClass.ItemGroup;
+import com.Application.khanapina.ModelClass.Menu_item;
 import com.Application.khanapina.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> {
     //Initialize Activity and arraylist
 
-    ArrayList<String> arrayListGroup;
-    private Activity activity;
+    private List<ItemGroup> arrayListGroup;
+    private Context context;
 
-    public GroupAdapter(Activity activity, ArrayList<String> arrayListGroup) {
-        this.activity = activity;
+    public GroupAdapter(Context context, List<ItemGroup> arrayListGroup) {
+        this.context = context;
         this.arrayListGroup = arrayListGroup;
     }
 
@@ -34,22 +37,25 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GroupAdapter.GroupViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final GroupAdapter.GroupViewHolder holder, int position) {
+        holder.cousine_text.setText(arrayListGroup.get(position).getKey());
+
         //Set group name on Textview
-        holder.cousine_text.setText(arrayListGroup.get(position));
+
+        //String name=holder.cousine_text.getText().toString();
+        Log.d("database", "onBindViewHolder: " + arrayListGroup.size());
 
 
         //Initialize member ArrayList
-        ArrayList<String> arrayList = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            arrayList.add("Member " + i);
-        }
+        List<Menu_item> menu_items = arrayListGroup.get(position).getMenu();
 
-        ItemAdapter itemAdapter = new ItemAdapter(arrayList);
         //Initialize LayoutManager
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         //set Adapter and layout manager
+        ItemAdapter itemAdapter = new ItemAdapter(menu_items, context);
+        holder.rv_items.setHasFixedSize(true);
         holder.rv_items.setLayoutManager(linearLayoutManager);
+        holder.rv_items.setNestedScrollingEnabled(false);
         holder.rv_items.setAdapter(itemAdapter);
 
     }

@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 public class DessertLayout extends AppCompatActivity implements BottomSheetView {
 
@@ -100,35 +101,28 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
         String savecurrenttime, savecurrentdate;
 
         Calendar calfordate = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         savecurrentdate = currentDate.format(calfordate.getTime());
 
-        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a", Locale.US);
         savecurrenttime = currentTime.format(calfordate.getTime());
 
         final DatabaseReference cartlistref = FirebaseDatabase.getInstance().getReference().child("cartlist");
 
         final HashMap<String, Object> cartmap = new HashMap<>();
         final HashMap<String, Object> bannermap = new HashMap<>();
-        cartmap.put("item_name", ((TextView) dessert_recyclerview.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.item_name)).getText().toString());
-        cartmap.put("item_price", ((TextView) dessert_recyclerview.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.item_price)).getText().toString());
+        cartmap.put("item_name", ((TextView) Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).
+                itemView.findViewById(R.id.item_name)).getText().toString());
+        cartmap.put("item_price", ((TextView) Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).
+                itemView.findViewById(R.id.item_price)).getText().toString());
         cartmap.put("item_quantity", item_count);
         cartmap.put("order_date", savecurrentdate);
         cartmap.put("order_time", savecurrenttime);
-        bannermap.put("total_item", item_count);
         cartlistref.child(String.valueOf(position)).updateChildren(cartmap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(DessertLayout.this, "Item Added", Toast.LENGTH_SHORT).show();
-                    cartlistref.updateChildren(bannermap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("checking", "onComplete: " + "successful");
-                            }
-                        }
-                    });
                 }
             }
         });
@@ -137,25 +131,26 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
     }
 
 
+
     @Override
     public void onRemovingItem(int position, int item_count) {
         if (item_count == 0) {
             DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist").child(String.valueOf(position));
             cartlistRef.removeValue();
-            dessert_recyclerview.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.addItemButton).setVisibility(View.VISIBLE);
-            dessert_recyclerview.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.increment_item).setVisibility(View.GONE);
-            dessert_recyclerview.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.decrement_item).setVisibility(View.GONE);
-            dessert_recyclerview.findViewHolderForAdapterPosition(position).itemView.findViewById(R.id.item_count).setVisibility(View.GONE);
+            Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.addItemButton).setVisibility(View.VISIBLE);
+            Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.increment_item).setVisibility(View.GONE);
+            Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.decrement_item).setVisibility(View.GONE);
+            Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.item_count).setVisibility(View.GONE);
 
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
             String savecurrenttime, savecurrentdate;
 
             Calendar calfordate = Calendar.getInstance();
-            SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
             savecurrentdate = currentDate.format(calfordate.getTime());
 
-            SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
+            SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a", Locale.US);
             savecurrenttime = currentTime.format(calfordate.getTime());
 
             DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist").child(String.valueOf(position));
@@ -169,7 +164,7 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
     }
 
     private void showBanner(int position, final int item_count) {
-        DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist").child(String.valueOf(position));
+        DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist");
         cartlistRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -177,10 +172,11 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 } else {
                     if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                        Log.d("TAG", "onDataChange: " + dataSnapshot.getKey());
-                        String item = dataSnapshot.child("item_quantity").getValue().toString();
-                        Toast.makeText(DessertLayout.this, item, Toast.LENGTH_SHORT).show();
-                        No_of_items.setText(item);
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            String item = dataSnapshot1.child("item_quantity").getValue().toString();
+                            Toast.makeText(DessertLayout.this, item, Toast.LENGTH_SHORT).show();
+                            No_of_items.setText(item);
+                        }
                     } else {
                         Toast.makeText(DessertLayout.this, "mymsg", Toast.LENGTH_SHORT).show();
                     }

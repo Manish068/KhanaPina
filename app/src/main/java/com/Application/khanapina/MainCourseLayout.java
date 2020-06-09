@@ -56,13 +56,11 @@ public class MainCourseLayout extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     for (DataSnapshot snapshot : dataSnapshot1.child("menu/MainCourse").getChildren()) {
-                        for (DataSnapshot dataSnapshot2 : snapshot.getChildren()) {
-                            Menu_item item = dataSnapshot2.getValue(Menu_item.class);
-                            maincourseItems.add(item);
-                        }
-                        mainCourseAdapter = new MainCourseAdapter(MainCourseLayout.this, maincourseItems);
-                        maincourse_recyclerview.setAdapter(mainCourseAdapter);
+                        Menu_item item = snapshot.getValue(Menu_item.class);
+                        maincourseItems.add(item);
                     }
+                    mainCourseAdapter = new MainCourseAdapter(MainCourseLayout.this, maincourseItems);
+                    maincourse_recyclerview.setAdapter(mainCourseAdapter);
                 }
             }
 

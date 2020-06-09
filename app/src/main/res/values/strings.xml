@@ -7,6 +7,7 @@
     <string name="main_course">Main Course</string>
     <string name="drinks">Drinks</string>
     <string name="location_bar">Location Bar</string>
+    <string name="location_icon">location Icon</string>
     <string name="untill_your">Until your</string>
     <string name="tummy_get_s_full">Tummy get\'s Full.</string>
     <string name="created_by_manish">Created by @Manish</string>
@@ -25,4 +26,7 @@
     <string name="item_image">Item Image</string>
     <string name="rating">Rating</string>
     <string name="votes">Votes</string>
+    <string name="increment">+</string>
+    <string name="decrement">-</string>
+    <string name="add">Add</string>
 </resources>

@@ -5,16 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.Application.khanapina.Adapters.GroupAdapter;
+import com.Application.khanapina.ModelClass.ItemGroup;
+
+import com.Application.khanapina.ModelClass.Menu_item;
 import com.Application.khanapina.ModelClass.Restaurant_info;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class EachRestaurant extends AppCompatActivity {
 
@@ -33,10 +36,9 @@ public class EachRestaurant extends AppCompatActivity {
     TextView RestaurantName, RatingNumber, RatingText, CousineText, LocationText;
     RatingBar ratingBar;
     Intent intent;
+
+
     RecyclerView rv_CousineGroup;
-    ArrayList<String> stringArrayList;
-    LinearLayoutManager layoutManagerGroup;
-    GroupAdapter groupAdapter;
     DatabaseReference reference;
 
     @Override
@@ -44,7 +46,7 @@ public class EachRestaurant extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_each_restaurant);
 
-        rv_CousineGroup = findViewById(R.id.rv_cousinegroup);
+
         RestaurantImage = findViewById(R.id.Restaurant_image);
         RestaurantName = findViewById(R.id.Restaurant_name);
         RatingNumber = findViewById(R.id.rating_number);
@@ -55,39 +57,48 @@ public class EachRestaurant extends AppCompatActivity {
         intent = getIntent();
 
         Restaurant_info restaurant_info = intent.getParcelableExtra("selected_one");
+        assert restaurant_info != null;
         final String restaurantName = restaurant_info.getName();
         String imageres = restaurant_info.getPhotos_url();
         String cousine = restaurant_info.getCuisines();
-        String ratingtext = restaurant_info.getRating_text();
+        String rating = restaurant_info.getRating_text();
         String ratingNumber = restaurant_info.getAggregate_rating();
 
         Picasso.get().load(imageres).into(RestaurantImage);
         RestaurantName.setText(restaurantName);
         CousineText.setText(cousine);
         RatingNumber.setText(ratingNumber);
-        RatingText.setText(ratingtext);
-
-        stringArrayList = new ArrayList<>();
+        RatingText.setText(rating);
 
 
-        reference = FirebaseDatabase.getInstance().getReference().child("Restaurants");
+        reference = FirebaseDatabase.getInstance().getReference("Restaurants");
+        rv_CousineGroup = findViewById(R.id.rv_cousinegroup);
+        rv_CousineGroup.setLayoutManager(new LinearLayoutManager(this));
+
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<ItemGroup> itemGroups = new ArrayList<>();
                 for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-                    if (restaurantName.equals(dataSnapshot.child(String.valueOf(i)).getValue(Restaurant_info.class).getName())) {
+                    if (restaurantName.equals(Objects.requireNonNull(dataSnapshot.child(String.valueOf(i)).getValue(Restaurant_info.class)).getName())) {
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.child(i + "/menu").getChildren()) {
-                            stringArrayList.add(dataSnapshot1.getKey());
+                            ItemGroup itemGroup = new ItemGroup();
+                            itemGroup.setKey(dataSnapshot1.getKey());
+                            ArrayList<Menu_item> items = new ArrayList<>();
+                            for (DataSnapshot snapshot : dataSnapshot1.getChildren()) {
+                                Log.d("trial", "onDataChange: " + snapshot.toString());
+                                Menu_item item_category = snapshot.getValue(Menu_item.class);
+                                items.add(item_category);
+                                itemGroup.setMenu(items);
+                            }
+                            itemGroups.add(itemGroup);
                         }
-                        break;
-                    } else {
-                        Log.d("myrule", "onDataChange: " + "noData");
+                        GroupAdapter adapter = new GroupAdapter(EachRestaurant.this, itemGroups);
+                        rv_CousineGroup.setAdapter(adapter);
                     }
                 }
-                groupAdapter = new GroupAdapter(EachRestaurant.this, stringArrayList);
-                layoutManagerGroup = new LinearLayoutManager(EachRestaurant.this);
-                rv_CousineGroup.setLayoutManager(layoutManagerGroup);
-                rv_CousineGroup.setAdapter(groupAdapter);
+
             }
 
             @Override
@@ -95,6 +106,5 @@ public class EachRestaurant extends AppCompatActivity {
 
             }
         });
-
     }
 }
