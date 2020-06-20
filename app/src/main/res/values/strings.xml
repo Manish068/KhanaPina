@@ -29,4 +29,7 @@
     <string name="increment">+</string>
     <string name="decrement">-</string>
     <string name="add">Add</string>
+    <string name="go_to_cart_layout" />
+    <string name="go_to_cart">Go to cart</string>
+    <string name="restaurant_image">Restaurant Image</string>
 </resources>

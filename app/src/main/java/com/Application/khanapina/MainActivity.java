@@ -50,9 +50,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity implements Restaurant_RecyclerView.ResturantView_holder.OnNoteListener {
+
 
 
     //for location
@@ -131,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
 
         //for Banner
         Imagesliderfunction();
+
+
         //implementation of recyclerview for showing top restaurants
         toprestaurants();
 
@@ -174,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
 
     }
 
+
     public void toprestaurants() {
         restaurant_list_recyvlerview = findViewById(R.id.list_of_top_restaurant);
         restaurant_list_recyvlerview.setLayoutManager(new LinearLayoutManager(this));
@@ -216,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         firestore.collection("Banner").document(document.getId())
                                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
@@ -261,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
         });
     }
 
-    public void Banner_image_url(String url){
+    public void Banner_image_url(String url) {
         sliderItems.add(new Banner(url));
         viewPager2.setAdapter(new BannerAdapter(sliderItems, viewPager2));
         viewPager2.setClipToPadding(true);
@@ -283,8 +288,9 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
     }
 
     public void OpenDessertLayout(View view) {
-        startActivity(new Intent(this,DessertLayout.class));
+        startActivity(new Intent(this, DessertLayout.class));
     }
+
 
     public void OpenDrinksLayout(View view) {
         startActivity(new Intent(this, DrinksLayout.class));

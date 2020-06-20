@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,22 +21,22 @@ import com.Application.khanapina.ModelClass.Menu_item;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
 public class DessertLayout extends AppCompatActivity implements BottomSheetView {
+
 
     RecyclerView dessert_recyclerview;
     DessertAdapter dessertAdapter;
@@ -46,6 +46,8 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
     TextView No_of_items;
     private LinearLayout linearLayout;
     private BottomSheetBehavior bottomSheetBehavior;
+    Boolean openBanner = false;
+    ExtendedFloatingActionButton floatingActionButton;
 
 
     @Override
@@ -55,9 +57,10 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
 
 
         linearLayout = findViewById(R.id.bottom_sheet);
-        No_of_items = findViewById(R.id.total_items);
+        // No_of_items = findViewById(R.id.total_items);
         bottomSheetBehavior = BottomSheetBehavior.from(linearLayout);
         backbutton = findViewById(R.id.back_button);
+        floatingActionButton = findViewById(R.id.gotoCartButton);
 
 
         backbutton.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +71,12 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
             }
         });
 
+        getMenuItems();
+
+
+    }
+
+    private void getMenuItems() {
         dessert_recyclerview = findViewById(R.id.dessert_recyclerview);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         dessert_recyclerview.setLayoutManager(gridLayoutManager);
@@ -92,7 +101,6 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
                 Log.e("dessertDatabaseError", "onCancelled: ", databaseError.toException());
             }
         });
-
     }
 
     @Override
@@ -107,10 +115,13 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a", Locale.US);
         savecurrenttime = currentTime.format(calfordate.getTime());
 
-        final DatabaseReference cartlistref = FirebaseDatabase.getInstance().getReference().child("cartlist");
+        String str = savecurrentdate;
+        String strNew = str.replace("/", ""); //strNew is 'HelloWorldJavaUsers'
+
+
+        final DatabaseReference cartlistref = FirebaseDatabase.getInstance().getReference().child("cartlist").child(strNew);
 
         final HashMap<String, Object> cartmap = new HashMap<>();
-        final HashMap<String, Object> bannermap = new HashMap<>();
         cartmap.put("item_name", ((TextView) Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).
                 itemView.findViewById(R.id.item_name)).getText().toString());
         cartmap.put("item_price", ((TextView) Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).
@@ -127,22 +138,93 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
             }
         });
 
-        showBanner(position, item_count);
+
+        DatabaseReference cartlist = FirebaseDatabase.getInstance().getReference().child("cartlist").child(strNew);
+        cartlist.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren() && floatingActionButton.getVisibility() == View.VISIBLE) {
+                    Toast.makeText(DessertLayout.this,
+                            "has children",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    floatingActionButton.show();
+                    Animation animation = AnimationUtils.loadAnimation(DessertLayout.this, R.anim.fadein);
+                    floatingActionButton.startAnimation(animation);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("DessertLayouterror", "onCancelled: " + databaseError.getMessage());
+            }
+        });
+
+        //  showBanner(item_count);
     }
 
+    @Override
+    public void onIncrementClick(int position, int item_count) {
+        String savecurrenttime, savecurrentdate;
+
+        Calendar calfordate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        savecurrentdate = currentDate.format(calfordate.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a", Locale.US);
+        savecurrenttime = currentTime.format(calfordate.getTime());
+
+        String str = savecurrentdate;
+        String strNew = str.replace("/", "");
+
+        DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist").child(strNew).child(String.valueOf(position));
+        cartlistRef.child("item_quantity").setValue(item_count);
+        cartlistRef.child("order_date").setValue(savecurrentdate);
+        cartlistRef.child("order_time").setValue(savecurrenttime);
+    }
 
 
     @Override
     public void onRemovingItem(int position, int item_count) {
         if (item_count == 0) {
-            DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist").child(String.valueOf(position));
+            String savecurrentdate;
+
+            Calendar calfordate = Calendar.getInstance();
+            SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+            savecurrentdate = currentDate.format(calfordate.getTime());
+
+            String str = savecurrentdate;
+            String strNew = str.replace("/", "");
+
+
+            DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist").child(strNew).child(String.valueOf(position));
             cartlistRef.removeValue();
             Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.addItemButton).setVisibility(View.VISIBLE);
             Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.increment_item).setVisibility(View.GONE);
             Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.decrement_item).setVisibility(View.GONE);
             Objects.requireNonNull(dessert_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.item_count).setVisibility(View.GONE);
 
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            DatabaseReference cartlist = FirebaseDatabase.getInstance().getReference().child("cartlist").child(strNew);
+            cartlist.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChildren()) {
+                        Toast.makeText(DessertLayout.this,
+                                "has children",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Animation animation = AnimationUtils.loadAnimation(DessertLayout.this, R.anim.fadeout);
+                        floatingActionButton.startAnimation(animation);
+                        floatingActionButton.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e("DessertLayouterror", "onCancelled: " + databaseError.getMessage());
+                }
+            });
+            //showBanner(item_count);
         } else {
             String savecurrenttime, savecurrentdate;
 
@@ -153,42 +235,53 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
             SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a", Locale.US);
             savecurrenttime = currentTime.format(calfordate.getTime());
 
-            DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist").child(String.valueOf(position));
+            String str = savecurrentdate;
+            String strNew = str.replace("/", "");
+
+            DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist").child(strNew).child(String.valueOf(position));
             cartlistRef.child("item_quantity").setValue(item_count);
             cartlistRef.child("order_date").setValue(savecurrentdate);
             cartlistRef.child("order_time").setValue(savecurrenttime);
 
-            showBanner(position, item_count);
+            // showBanner(item_count);
 
         }
     }
+    /*private void showBanner(final int item_count) {
 
-    private void showBanner(int position, final int item_count) {
+        final ArrayList<Integer> itemQuantity=new ArrayList<>();
         DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist");
         cartlistRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (item_count == 0) {
+                if (item_count == 0 ) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    itemQuantity.clear();
                 } else {
-                    if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             String item = dataSnapshot1.child("item_quantity").getValue().toString();
                             Toast.makeText(DessertLayout.this, item, Toast.LENGTH_SHORT).show();
-                            No_of_items.setText(item);
+                            itemQuantity.add(Integer.parseInt(item));
+                            Log.d("ItemQuantity", "onDataChange: "+itemQuantity.size());
+                            //No_of_items.setText(String.valueOf(totalQuantity(itemQuantity)));
                         }
-                    } else {
-                        Toast.makeText(DessertLayout.this, "mymsg", Toast.LENGTH_SHORT).show();
-                    }
+                    No_of_items.setText(String.valueOf(totalQuantity(itemQuantity)));
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 }
-            }
-
+                }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("DatabaseError", databaseError.getMessage());
             }
         });
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
     }
+
+    private int totalQuantity(ArrayList<Integer> itemQuantity) {
+            int sum = 0;
+            for (int i = 0; i < itemQuantity.size(); i++)
+                sum += itemQuantity.get(i);
+            return sum;
+    }*/
 }
 

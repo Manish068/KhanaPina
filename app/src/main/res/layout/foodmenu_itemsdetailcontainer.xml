@@ -28,39 +28,52 @@
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:id="@+id/fav_button"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_favorite_shadow_24" />
+
+                </RelativeLayout>
+
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="20dp">
 
                     <ImageView
                         android:id="@+id/item_image"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:elevation="20dp"
                         android:contentDescription="@string/item_image"
                         android:scaleType="fitXY" />
                 </com.google.android.material.card.MaterialCardView>
+
 
                 <TextView
                     android:id="@+id/item_price"
                     android:layout_width="50dp"
                     android:layout_height="15dp"
                     android:layout_gravity="end"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="-10dp"
                     android:layout_marginEnd="5dp"
                     android:gravity="center"
                     android:textSize="12sp" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="-10dp"
                     android:layout_marginEnd="5dp">
 
                     <TextView

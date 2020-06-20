@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,14 +43,22 @@ public class Restaurant_RecyclerView extends RecyclerView.Adapter<Restaurant_Rec
 
     @Override
     public void onBindViewHolder(@NonNull ResturantView_holder holder, int position) {
+        //set Animation
+        holder.restaurant_pic.setAnimation(AnimationUtils.loadAnimation(mcontext, R.anim.fade_transition_animation));
+
+
+        holder.container.setAnimation(AnimationUtils.loadAnimation(mcontext, R.anim.fade_scale_animation));
+
         holder.tv_name.setText(mrestaurant_info.get(position).getName());
         holder.tv_cuisines.setText(mrestaurant_info.get(position).getCuisines());
         holder.tv_aggregate_rating.setText(mrestaurant_info.get(position).getAggregate_rating());
         holder.tv_rating_text.setText(mrestaurant_info.get(position).getRating_text());
         holder.tv_votes.setText(mrestaurant_info.get(position).getVotes());
-        holder.tv_aggregate_rating.setTextColor(Color.parseColor("#"+mrestaurant_info.get(position).getRating_color()));
+        holder.tv_aggregate_rating.setTextColor(Color.parseColor("#" + mrestaurant_info.get(position).getRating_color()));
 
         Picasso.get().load(mrestaurant_info.get(position).getPhotos_url()).into(holder.restaurant_pic);
+
+
     }
 
     @Override
@@ -68,6 +78,8 @@ public class Restaurant_RecyclerView extends RecyclerView.Adapter<Restaurant_Rec
 
         OnNoteListener mOnNoteListener;
 
+        LinearLayout container;
+
 
         public ResturantView_holder(@NonNull View itemView, final OnNoteListener mOnNoteListener) {
             super(itemView);
@@ -77,6 +89,7 @@ public class Restaurant_RecyclerView extends RecyclerView.Adapter<Restaurant_Rec
             tv_aggregate_rating = itemView.findViewById(R.id.rating_number);
             tv_rating_text = itemView.findViewById(R.id.rating_text);
             tv_votes = itemView.findViewById(R.id.votes_count);
+            container = itemView.findViewById(R.id.container);
             this.mOnNoteListener = mOnNoteListener;
 
             itemView.setOnClickListener(new View.OnClickListener() {

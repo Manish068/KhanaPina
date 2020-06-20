@@ -154,10 +154,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="65dp" />
 
+
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="90dp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -165,90 +166,209 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="90dp"
-                    android:elevation="20dp">
+                    android:layout_height="match_parent">
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:cardCornerRadius="20dp">
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="20dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#ffffff"
+                            android:background="@color/yellow"
+                            android:gravity="center"
                             android:orientation="horizontal">
 
-                            <Button
-                                android:id="@+id/dessert_layout"
-                                style="?buttonBarButtonStyle"
-                                android:layout_width="80dp"
+                            <FrameLayout
                                 android:layout_height="80dp"
-                                android:layout_marginStart="10dp"
-                                android:background="@drawable/shadow_button"
-                                android:drawableTop="@drawable/ic_dessert"
-                                android:fontFamily="@font/perpetua_bold"
-                                android:onClick="OpenDessertLayout"
-                                android:text="@string/dessert"
-                                android:textAllCaps="false"
-                                android:textColor="@color/textcolor"
-                                android:textSize="14sp" />
+                                android:layout_marginStart="5dp"
+                                android:layout_width="80dp"
+                                android:background="@drawable/button_background">
 
-                            <Button
-                                style="?buttonBarButtonStyle"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:layout_marginStart="10dp"
-                                android:background="@drawable/shadow_button"
-                                android:drawableTop="@drawable/ic_burger"
-                                android:fontFamily="@font/perpetua_bold"
-                                android:onClick="OpenBurgerLayout"
-                                android:text="@string/burger"
-                                android:textAllCaps="false"
-                                android:textColor="@color/textcolor"
-                                android:textSize="13sp" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="?android:attr/selectableItemBackground"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:onClick="OpenDessertLayout"
+                                    android:orientation="vertical">
 
-                            <Button
-                                style="?buttonBarButtonStyle"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:layout_marginStart="10dp"
-                                android:background="@drawable/shadow_button"
-                                android:drawableTop="@drawable/ic_dinner"
-                                android:fontFamily="@font/perpetua_bold"
-                                android:onClick="OpenMainCourseLayout"
-                                android:text="@string/main_course"
-                                android:textAllCaps="false"
-                                android:textColor="@color/textcolor"
-                                android:textSize="13sp" />
+                                    <ImageView
+                                        android:id="@+id/category_imageview"
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/ic_dessert" />
 
-                            <Button
-                                style="?buttonBarButtonStyle"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:layout_marginStart="10dp"
-                                android:background="@drawable/shadow_button"
-                                android:drawableTop="@drawable/ic_pizza"
-                                android:fontFamily="@font/perpetua_bold"
-                                android:onClick="OpenPizzaLayout"
-                                android:text="@string/pizza"
-                                android:textAllCaps="false"
-                                android:textColor="@color/textcolor"
-                                android:textSize="14sp" />
+                                    <TextView
+                                        android:id="@+id/category_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:fontFamily="@font/rubik_medium"
+                                        android:text="@string/dessert"
+                                        android:textColor="@color/textcolor"
+                                        android:textSize="12sp" />
 
-                            <Button
-                                style="?buttonBarButtonStyle"
-                                android:layout_width="80dp"
+
+                                </LinearLayout>
+                            </FrameLayout>
+
+                            <FrameLayout
                                 android:layout_height="80dp"
-                                android:layout_marginStart="10dp"
-                                android:background="@drawable/shadow_button"
-                                android:drawableTop="@drawable/ic_soda"
-                                android:fontFamily="@font/perpetua_bold"
-                                android:onClick="OpenDrinksLayout"
-                                android:text="@string/drinks"
-                                android:textAllCaps="false"
-                                android:textColor="@color/textcolor"
-                                android:textSize="14sp" />
+                                android:layout_marginStart="5dp"
+                                android:layout_width="80dp"
+                                android:background="@drawable/button_background">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="?android:attr/selectableItemBackground"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:onClick="OpenBurgerLayout"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/ic_burger" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:fontFamily="@font/rubik_medium"
+                                        android:text="@string/burger"
+                                        android:textColor="@color/textcolor"
+                                        android:textSize="12sp" />
+
+
+                                </LinearLayout>
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_height="80dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_width="80dp"
+                                android:background="@drawable/button_background">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="?android:attr/selectableItemBackground"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:onClick="OpenMainCourseLayout"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/ic_dinner" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:fontFamily="@font/rubik_medium"
+                                        android:text="@string/main_course"
+                                        android:textColor="@color/textcolor"
+                                        android:textSize="12sp" />
+
+
+                                </LinearLayout>
+                            </FrameLayout>
+
+
+                            <FrameLayout
+                                android:layout_height="80dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_width="80dp"
+                                android:background="@drawable/button_background">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="?android:attr/selectableItemBackground"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:onClick="OpenPizzaLayout"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/ic_pizza" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:fontFamily="@font/rubik_medium"
+                                        android:text="@string/pizza"
+                                        android:textColor="@color/textcolor"
+                                        android:textSize="12sp" />
+
+
+                                </LinearLayout>
+                            </FrameLayout>
+
+
+                            <FrameLayout
+                                android:layout_height="80dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_width="80dp"
+                                android:background="@drawable/button_background">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="?android:attr/selectableItemBackground"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:onClick="OpenDrinksLayout"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:scaleType="fitXY"
+                                        android:src="@drawable/ic_soda" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="5dp"
+                                        android:fontFamily="@font/rubik_medium"
+                                        android:text="@string/drinks"
+                                        android:textColor="@color/textcolor"
+                                        android:textSize="12sp" />
+
+
+                                </LinearLayout>
+                            </FrameLayout>
 
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
@@ -266,6 +386,7 @@
                 android:text="@string/top_restaurants"
                 android:textColor="@color/yellow"
                 android:textSize="30sp"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -276,6 +397,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/hotdeal" />
@@ -289,6 +411,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="10dp"
                     android:orientation="vertical">
 
                     <TextView

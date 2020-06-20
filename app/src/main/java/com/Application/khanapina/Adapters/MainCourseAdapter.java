@@ -10,8 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Application.khanapina.BottomSheetView;
 import com.Application.khanapina.ModelClass.Menu_item;
 import com.Application.khanapina.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
@@ -23,10 +25,13 @@ public class MainCourseAdapter extends RecyclerView.Adapter<MainCourseAdapter.Ma
 
     private Context context;
     private ArrayList<Menu_item> maincourse_items;
+    int item_count;
+    private BottomSheetView bottomSheetView;
 
-    public MainCourseAdapter(Context context, ArrayList<Menu_item> maincourse_items) {
+    public MainCourseAdapter(Context context, ArrayList<Menu_item> maincourse_items, BottomSheetView bottomSheetView) {
         this.context = context;
         this.maincourse_items = maincourse_items;
+        this.bottomSheetView = bottomSheetView;
     }
 
     @NonNull
@@ -37,7 +42,7 @@ public class MainCourseAdapter extends RecyclerView.Adapter<MainCourseAdapter.Ma
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainCourseViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MainCourseViewHolder holder, int position) {
         holder.itemName.setText(maincourse_items.get(position).getItem_name());
         Picasso.get().load(maincourse_items.get(position).getItem_url()).into(holder.itemImage);
         //Get current locale information
@@ -48,7 +53,42 @@ public class MainCourseAdapter extends RecyclerView.Adapter<MainCourseAdapter.Ma
 
         //Currency Formatter specific to locale
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(currentLocale);
-        holder.itemPrice.setText(String.valueOf(currencyFormatter.format(maincourse_items.get(position).getItem_price())));
+        holder.itemPrice.setText(currencyFormatter.format(maincourse_items.get(position).getItem_price()));
+
+        holder.AddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item_count = 1;
+                holder.Increment.setVisibility(View.VISIBLE);
+                holder.Decrement.setVisibility(View.VISIBLE);
+                holder.itemcount.setVisibility(View.VISIBLE);
+                holder.AddItem.setVisibility(View.GONE);
+                holder.itemcount.setText(String.valueOf(item_count));
+
+                bottomSheetView.onAddClick(holder.getAdapterPosition(), item_count);
+            }
+        });
+
+
+        holder.Decrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                item_count = Integer.parseInt(holder.itemcount.getText().toString()) - 1;
+                holder.itemcount.setText(String.valueOf(item_count));
+                bottomSheetView.onRemovingItem(holder.getAdapterPosition(), item_count);
+            }
+        });
+
+
+        holder.Increment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item_count = Integer.parseInt(holder.itemcount.getText().toString()) + 1;
+                holder.itemcount.setText(String.valueOf(item_count));
+                bottomSheetView.onIncrementClick(holder.getAdapterPosition(), item_count);
+            }
+        });
     }
 
     @Override
@@ -59,42 +99,26 @@ public class MainCourseAdapter extends RecyclerView.Adapter<MainCourseAdapter.Ma
 
     public class MainCourseViewHolder extends RecyclerView.ViewHolder {
         TextView itemName, itemPrice;
-        ImageView itemImage;
-        TextView decrementItem, incrementItem, AddItem, itemCount;
+        ImageView itemImage, favoriteItem;
+        TextView AddItem, Increment, Decrement, itemcount;
+
 
         public MainCourseViewHolder(@NonNull View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.item_name);
             itemImage = itemView.findViewById(R.id.item_image);
             itemPrice = itemView.findViewById(R.id.item_price);
-            decrementItem = itemView.findViewById(R.id.decrement_item);
-            incrementItem = itemView.findViewById(R.id.increment_item);
             AddItem = itemView.findViewById(R.id.addItemButton);
-            itemCount = itemView.findViewById(R.id.item_count);
+            Increment = itemView.findViewById(R.id.increment_item);
+            Decrement = itemView.findViewById(R.id.decrement_item);
+            itemcount = itemView.findViewById(R.id.item_count);
+            favoriteItem = itemView.findViewById(R.id.fav_button);
 
-            decrementItem.setVisibility(View.GONE);
-            incrementItem.setVisibility(View.GONE);
-            itemCount.setVisibility(View.GONE);
 
-            AddItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AddItem.setVisibility(View.GONE);
-                    decrementItem.setVisibility(View.VISIBLE);
-                    incrementItem.setVisibility(View.VISIBLE);
-                    itemCount.setVisibility(View.VISIBLE);
-                }
-            });
+            Increment.setVisibility(View.GONE);
+            itemcount.setVisibility(View.GONE);
+            Decrement.setVisibility(View.GONE);
 
-            decrementItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    decrementItem.setVisibility(View.GONE);
-                    incrementItem.setVisibility(View.GONE);
-                    itemCount.setVisibility(View.GONE);
-                    AddItem.setVisibility(View.VISIBLE);
-                }
-            });
         }
 
     }
