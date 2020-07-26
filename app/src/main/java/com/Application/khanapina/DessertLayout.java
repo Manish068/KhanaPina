@@ -45,7 +45,7 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
     ImageView backbutton;
     TextView No_of_items;
     private LinearLayout linearLayout;
-    private BottomSheetBehavior bottomSheetBehavior;
+
     Boolean openBanner = false;
     ExtendedFloatingActionButton floatingActionButton;
 
@@ -58,7 +58,6 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
 
         linearLayout = findViewById(R.id.bottom_sheet);
         // No_of_items = findViewById(R.id.total_items);
-        bottomSheetBehavior = BottomSheetBehavior.from(linearLayout);
         backbutton = findViewById(R.id.back_button);
         floatingActionButton = findViewById(R.id.gotoCartButton);
 
@@ -81,7 +80,7 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         dessert_recyclerview.setLayoutManager(gridLayoutManager);
         dessertItems = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference().child("Restaurants");
+        reference = FirebaseDatabase.getInstance().getReference("Restaurants");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -246,6 +245,12 @@ public class DessertLayout extends AppCompatActivity implements BottomSheetView 
             // showBanner(item_count);
 
         }
+    }
+
+    public void OpenCart(View view) {
+        startActivity(new Intent(this, cart.class));
+        overridePendingTransition(0, 0);
+        finish();
     }
     /*private void showBanner(final int item_count) {
 

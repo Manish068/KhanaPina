@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,8 +27,11 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.Application.khanapina.Adapters.BannerAdapter;
+import com.Application.khanapina.Adapters.DessertAdapter;
 import com.Application.khanapina.Adapters.Restaurant_RecyclerView;
+import com.Application.khanapina.GoogleMaps.UserLocation;
 import com.Application.khanapina.ModelClass.Banner;
+import com.Application.khanapina.ModelClass.Menu_item;
 import com.Application.khanapina.ModelClass.Restaurant_info;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -53,8 +57,11 @@ import java.util.Locale;
 import java.util.Objects;
 
 
-public class MainActivity extends AppCompatActivity implements Restaurant_RecyclerView.ResturantView_holder.OnNoteListener {
+public class MainActivity extends AppCompatActivity implements Restaurant_RecyclerView.ResturantView_holder.OnNoteListener, BottomSheetView {
 
+
+    //for search option
+    SearchView searchView;
 
 
     //for location
@@ -88,14 +95,32 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        // for searchview
+        searchView = findViewById(R.id.searchoption);
+
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SearchLayout.class));
+            }
+        });
+
+
         //for Location
         locationService = findViewById(R.id.Location_service);
         Locality = findViewById(R.id.tv_Address);
         fullAddress = findViewById(R.id.tv_full_location);
-        Context context;
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, UserLocation.class));
+            }
+        });
+        /*locationService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ActivityCompat.checkSelfPermission(MainActivity.this
@@ -129,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
                 }
             }
         });
-
+*/
 
         //for Banner
         Imagesliderfunction();
@@ -191,13 +216,13 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Restaurant_info mrest = new Restaurant_info();
-                    mrest.setName(dataSnapshot1.getValue(Restaurant_info.class).getName());
-                    mrest.setCuisines(dataSnapshot1.getValue(Restaurant_info.class).getCuisines());
-                    mrest.setAggregate_rating(dataSnapshot1.child("user_rating").getValue(Restaurant_info.class).getAggregate_rating());
-                    mrest.setRating_text(dataSnapshot1.child("user_rating").getValue(Restaurant_info.class).getRating_text());
-                    mrest.setVotes(dataSnapshot1.child("user_rating").getValue(Restaurant_info.class).getVotes());
-                    mrest.setRating_color(dataSnapshot1.child("user_rating").getValue(Restaurant_info.class).getRating_color());
-                    mrest.setPhotos_url(dataSnapshot1.getValue(Restaurant_info.class).getPhotos_url());
+                    mrest.setName(Objects.requireNonNull(dataSnapshot1.getValue(Restaurant_info.class)).getName());
+                    mrest.setCuisines(Objects.requireNonNull(dataSnapshot1.getValue(Restaurant_info.class)).getCuisines());
+                    mrest.setAggregate_rating(Objects.requireNonNull(dataSnapshot1.child("user_rating").getValue(Restaurant_info.class)).getAggregate_rating());
+                    mrest.setRating_text(Objects.requireNonNull(dataSnapshot1.child("user_rating").getValue(Restaurant_info.class)).getRating_text());
+                    mrest.setVotes(Objects.requireNonNull(dataSnapshot1.child("user_rating").getValue(Restaurant_info.class)).getVotes());
+                    mrest.setRating_color(Objects.requireNonNull(dataSnapshot1.child("user_rating").getValue(Restaurant_info.class)).getRating_color());
+                    mrest.setPhotos_url(Objects.requireNonNull(dataSnapshot1.getValue(Restaurant_info.class)).getPhotos_url());
                     mresturantinformation.add(mrest);
 
                 }
@@ -314,5 +339,20 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
         Intent intent = new Intent(this, EachRestaurant.class);
         intent.putExtra("selected_one", mresturantinformation.get(position));
         startActivity(intent);
+    }
+
+    @Override
+    public void onAddClick(int position, int item_count) {
+
+    }
+
+    @Override
+    public void onIncrementClick(int position, int item_count) {
+
+    }
+
+    @Override
+    public void onRemovingItem(int position, int item_count) {
+
     }
 }

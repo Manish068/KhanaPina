@@ -46,7 +46,7 @@ public class MainCourseLayout extends AppCompatActivity implements BottomSheetVi
     Boolean openBanner = false;
     ExtendedFloatingActionButton floatingActionButton;
     private LinearLayout linearLayout;
-    private BottomSheetBehavior bottomSheetBehavior;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +55,7 @@ public class MainCourseLayout extends AppCompatActivity implements BottomSheetVi
 
 
         linearLayout = findViewById(R.id.bottom_sheet);
-        // No_of_items = findViewById(R.id.total_items);
-        //bottomSheetBehavior = BottomSheetBehavior.from(linearLayout);
+
         backbutton = findViewById(R.id.back_button);
         floatingActionButton = findViewById(R.id.gotoCartButton);
 
@@ -78,7 +77,7 @@ public class MainCourseLayout extends AppCompatActivity implements BottomSheetVi
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         maincourse_recyclerview.setLayoutManager(gridLayoutManager);
         maincourseItems = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference().child("Restaurants");
+        reference = FirebaseDatabase.getInstance().getReference("Restaurants");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override

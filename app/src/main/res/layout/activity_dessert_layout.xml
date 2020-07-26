@@ -82,6 +82,7 @@
         android:visibility="invisible"
         app:icon="@drawable/ic_cart"
         app:iconSize="30dp"
+        android:onClick="OpenCart"
         app:iconTint="@android:color/white" />
 
     <include layout="@layout/bottom_sheet_dialog" />

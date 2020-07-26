@@ -16,6 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".GoogleMaps.UserLocation" />
+        <activity android:name=".SearchLayout" />
         <activity android:name=".EachRestaurant" />
         <activity android:name=".MainCourseLayout" />
         <activity android:name=".PizzaLayout" />
@@ -26,6 +28,11 @@
         <activity android:name=".profile_activity" />
         <activity android:name=".location" />
         <activity android:name=".cart" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBljNvHjapfjeSXi_cW0EK3PQ-uzVUZzUw" />
+
         <activity
             android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
             android:launchMode="standard"
@@ -44,6 +51,8 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <service android:name=".GoogleMaps.FerchAddressIntentService" />
     </application>
 
 </manifest>
