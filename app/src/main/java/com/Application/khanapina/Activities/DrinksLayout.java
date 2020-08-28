@@ -1,4 +1,4 @@
-package com.Application.khanapina;
+package com.Application.khanapina.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,10 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.Application.khanapina.Adapters.DrinksAdapter;
+import com.Application.khanapina.BottomSheetView;
 import com.Application.khanapina.ModelClass.Menu_item;
+import com.Application.khanapina.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

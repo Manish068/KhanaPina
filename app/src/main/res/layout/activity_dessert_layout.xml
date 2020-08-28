@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DessertLayout">
+    tools:context=".Activities.DessertLayout">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
@@ -84,7 +84,5 @@
         app:iconSize="30dp"
         android:onClick="OpenCart"
         app:iconTint="@android:color/white" />
-
-    <include layout="@layout/bottom_sheet_dialog" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

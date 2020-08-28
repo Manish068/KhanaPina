@@ -1,10 +1,12 @@
-package com.Application.khanapina;
+package com.Application.khanapina.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.Application.khanapina.R;
 
 public class Splashscreen extends AppCompatActivity {
     public static int SPLASH_TIME_OUT = 2000;

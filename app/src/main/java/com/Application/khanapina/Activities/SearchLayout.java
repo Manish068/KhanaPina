@@ -1,19 +1,19 @@
-package com.Application.khanapina;
+package com.Application.khanapina.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.Application.khanapina.Adapters.BurgerAdapter;
 import com.Application.khanapina.Adapters.DessertAdapter;
+import com.Application.khanapina.BottomSheetView;
 import com.Application.khanapina.ModelClass.Menu_item;
+import com.Application.khanapina.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

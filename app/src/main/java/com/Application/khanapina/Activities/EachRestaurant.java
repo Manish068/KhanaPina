@@ -1,4 +1,4 @@
-package com.Application.khanapina;
+package com.Application.khanapina.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +17,7 @@ import com.Application.khanapina.ModelClass.ItemGroup;
 
 import com.Application.khanapina.ModelClass.Menu_item;
 import com.Application.khanapina.ModelClass.Restaurant_info;
+import com.Application.khanapina.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

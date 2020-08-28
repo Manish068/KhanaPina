@@ -1,4 +1,4 @@
-package com.Application.khanapina;
+package com.Application.khanapina.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,11 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.Application.khanapina.Adapters.MainCourseAdapter;
+import com.Application.khanapina.Adapters.PizzaAdapter;
+import com.Application.khanapina.BottomSheetView;
 import com.Application.khanapina.ModelClass.Menu_item;
+import com.Application.khanapina.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,14 +36,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
-public class MainCourseLayout extends AppCompatActivity implements BottomSheetView {
+public class PizzaLayout extends AppCompatActivity implements BottomSheetView {
 
-    RecyclerView maincourse_recyclerview;
-    MainCourseAdapter mainCourseAdapter;
-    ArrayList<Menu_item> maincourseItems;
+    RecyclerView pizza_recyclerview;
+    PizzaAdapter pizzaAdapter;
+    ArrayList<Menu_item> pizzaItems;
     DatabaseReference reference;
     ImageView backbutton;
-
     Boolean openBanner = false;
     ExtendedFloatingActionButton floatingActionButton;
     private LinearLayout linearLayout;
@@ -51,44 +51,38 @@ public class MainCourseLayout extends AppCompatActivity implements BottomSheetVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.maincourse_layout);
-
+        setContentView(R.layout.activity_pizza_layout);
 
         linearLayout = findViewById(R.id.bottom_sheet);
 
         backbutton = findViewById(R.id.back_button);
         floatingActionButton = findViewById(R.id.gotoCartButton);
 
+
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainCourseLayout.this, MainActivity.class));
+                finish();
+                startActivity(new Intent(PizzaLayout.this, MainActivity.class));
             }
         });
 
-        getMenuItems();
-
-
-    }
-
-    private void getMenuItems() {
-
-        maincourse_recyclerview = findViewById(R.id.maincourse_recyclerview);
+        pizza_recyclerview = findViewById(R.id.pizza_recyclerview);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        maincourse_recyclerview.setLayoutManager(gridLayoutManager);
-        maincourseItems = new ArrayList<>();
+        pizza_recyclerview.setLayoutManager(gridLayoutManager);
+        pizzaItems = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Restaurants");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    for (DataSnapshot snapshot : dataSnapshot1.child("menu/MainCourse").getChildren()) {
+                    for (DataSnapshot snapshot : dataSnapshot1.child("menu/Pizza").getChildren()) {
                         Menu_item item = snapshot.getValue(Menu_item.class);
-                        maincourseItems.add(item);
+                        pizzaItems.add(item);
                     }
-                    mainCourseAdapter = new MainCourseAdapter(MainCourseLayout.this, maincourseItems, MainCourseLayout.this);
-                    maincourse_recyclerview.setAdapter(mainCourseAdapter);
+                    pizzaAdapter = new PizzaAdapter(PizzaLayout.this, pizzaItems, PizzaLayout.this);
+                    pizza_recyclerview.setAdapter(pizzaAdapter);
                 }
             }
 
@@ -118,9 +112,9 @@ public class MainCourseLayout extends AppCompatActivity implements BottomSheetVi
         final DatabaseReference cartlistref = FirebaseDatabase.getInstance().getReference().child("cartlist").child(strNew);
 
         final HashMap<String, Object> cartmap = new HashMap<>();
-        cartmap.put("item_name", ((TextView) Objects.requireNonNull(maincourse_recyclerview.findViewHolderForAdapterPosition(position)).
+        cartmap.put("item_name", ((TextView) Objects.requireNonNull(pizza_recyclerview.findViewHolderForAdapterPosition(position)).
                 itemView.findViewById(R.id.item_name)).getText().toString());
-        cartmap.put("item_price", ((TextView) Objects.requireNonNull(maincourse_recyclerview.findViewHolderForAdapterPosition(position)).
+        cartmap.put("item_price", ((TextView) Objects.requireNonNull(pizza_recyclerview.findViewHolderForAdapterPosition(position)).
                 itemView.findViewById(R.id.item_price)).getText().toString());
         cartmap.put("item_quantity", item_count);
         cartmap.put("order_date", savecurrentdate);
@@ -129,7 +123,7 @@ public class MainCourseLayout extends AppCompatActivity implements BottomSheetVi
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(MainCourseLayout.this, "Item Added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PizzaLayout.this, "Item Added", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -140,12 +134,12 @@ public class MainCourseLayout extends AppCompatActivity implements BottomSheetVi
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren() && floatingActionButton.getVisibility() == View.VISIBLE) {
-                    Toast.makeText(MainCourseLayout.this,
+                    Toast.makeText(PizzaLayout.this,
                             "has children",
                             Toast.LENGTH_SHORT).show();
                 } else {
                     floatingActionButton.show();
-                    Animation animation = AnimationUtils.loadAnimation(MainCourseLayout.this, R.anim.fadein);
+                    Animation animation = AnimationUtils.loadAnimation(PizzaLayout.this, R.anim.fadein);
                     floatingActionButton.startAnimation(animation);
                 }
             }
@@ -194,21 +188,21 @@ public class MainCourseLayout extends AppCompatActivity implements BottomSheetVi
 
             DatabaseReference cartlistRef = FirebaseDatabase.getInstance().getReference().child("cartlist").child(strNew).child(String.valueOf(position));
             cartlistRef.removeValue();
-            Objects.requireNonNull(maincourse_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.addItemButton).setVisibility(View.VISIBLE);
-            Objects.requireNonNull(maincourse_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.increment_item).setVisibility(View.GONE);
-            Objects.requireNonNull(maincourse_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.decrement_item).setVisibility(View.GONE);
-            Objects.requireNonNull(maincourse_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.item_count).setVisibility(View.GONE);
+            Objects.requireNonNull(pizza_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.addItemButton).setVisibility(View.VISIBLE);
+            Objects.requireNonNull(pizza_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.increment_item).setVisibility(View.GONE);
+            Objects.requireNonNull(pizza_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.decrement_item).setVisibility(View.GONE);
+            Objects.requireNonNull(pizza_recyclerview.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.item_count).setVisibility(View.GONE);
 
             DatabaseReference cartlist = FirebaseDatabase.getInstance().getReference().child("cartlist").child(strNew);
             cartlist.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.hasChildren()) {
-                        Toast.makeText(MainCourseLayout.this,
+                        Toast.makeText(PizzaLayout.this,
                                 "has children",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        Animation animation = AnimationUtils.loadAnimation(MainCourseLayout.this, R.anim.fadeout);
+                        Animation animation = AnimationUtils.loadAnimation(PizzaLayout.this, R.anim.fadeout);
                         floatingActionButton.startAnimation(animation);
                         floatingActionButton.setVisibility(View.INVISIBLE);
                     }

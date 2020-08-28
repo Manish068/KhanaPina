@@ -34,6 +34,7 @@
     <string name="restaurant_image">Restaurant Image</string>
     <string name="address">Address</string>
     <string name="enter_landmark">Enter Landmark</string>
+    <string name="landmark">Landmark :</string>
 
 
 </resources>

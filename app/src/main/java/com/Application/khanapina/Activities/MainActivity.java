@@ -1,13 +1,7 @@
-package com.Application.khanapina;
+package com.Application.khanapina.Activities;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,11 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -27,12 +21,12 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.Application.khanapina.Adapters.BannerAdapter;
-import com.Application.khanapina.Adapters.DessertAdapter;
 import com.Application.khanapina.Adapters.Restaurant_RecyclerView;
+import com.Application.khanapina.BottomSheetView;
 import com.Application.khanapina.GoogleMaps.UserLocation;
 import com.Application.khanapina.ModelClass.Banner;
-import com.Application.khanapina.ModelClass.Menu_item;
 import com.Application.khanapina.ModelClass.Restaurant_info;
+import com.Application.khanapina.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,10 +44,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 
@@ -82,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
     //for adapter
     Restaurant_RecyclerView restaurant_recyclerView;
 
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences, addressSharedPreference;
     private Runnable sliderRunnable = new Runnable() {
         @Override
         public void run() {
@@ -114,47 +106,26 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
+        //for save the login status once login don't have to login again this is step2
+        //step 1 is in Login page
+        sharedPreferences = getSharedPreferences("user_number", MODE_PRIVATE);
+        addressSharedPreference = getSharedPreferences("ADDRESS", MODE_PRIVATE);
+
+        if (addressSharedPreference.contains("ADDRESS")) {
+            String fullAdress = addressSharedPreference.getString("ADDRESS", null);
+            String[] splitAddress = fullAdress.split(",", 2);
+            Locality.setText(splitAddress[0]);
+            fullAddress.setText(splitAddress[1]);
+        } else {
+            Toast.makeText(this, "Select Location", Toast.LENGTH_SHORT).show();
+        }
+
         locationService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, UserLocation.class));
             }
         });
-        /*locationService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(MainActivity.this
-                        , Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Location> task) {
-                            //initialize location
-                            Location location = task.getResult();
-                            if (location != null) {
-                                try {
-                                    Geocoder geocoder = new Geocoder(MainActivity.this
-                                            , Locale.getDefault());
-
-                                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
-                                    Locality.setText(addresses.get(0).getLocality());
-
-                                    fullAddress.setText(addresses.get(0).getAddressLine(0));
-
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    });
-                } else {
-                    //when permission denied
-                    ActivityCompat.requestPermissions(MainActivity.this
-                            , new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-                }
-            }
-        });
-*/
 
         //for Banner
         Imagesliderfunction();
@@ -162,10 +133,6 @@ public class MainActivity extends AppCompatActivity implements Restaurant_Recycl
 
         //implementation of recyclerview for showing top restaurants
         toprestaurants();
-
-        //for save the login status once login don't have to login again this is step2
-        //step 1 is in Login page
-        sharedPreferences = getSharedPreferences("user_number", MODE_PRIVATE);
 
 
         //initialize the navigation view
