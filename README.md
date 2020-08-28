@@ -5,7 +5,7 @@ A food ordering app which contains features such as:
 
 1. User Login/Signup option
 
-![](ScreenShots/Login Page.jpg)
+![](ScreenShots/LoginPage.jpg)
 
 2. search option
 3. Item Advertising 
